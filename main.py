@@ -2,6 +2,7 @@
 import sys
 import os
 import webbrowser
+import json
 from gui.uis.windows.main_window.functions_main_window import * # Import main window functions
 from qt_core import * # Import qt core
 from gui.core.json_settings import Settings # Import settings
@@ -25,6 +26,8 @@ class MainWindow(QMainWindow): # Main window
 
         settings = Settings()
         self.settings = settings.items # Load settings
+        
+        self.pref = json.load(open(r'UserPref/preferences.json'))
 
         
         self.hide_grips = True # Show/Hide resize grips
@@ -49,21 +52,19 @@ class MainWindow(QMainWindow): # Main window
             # Load page
             MainFunctions.set_page(self, self.ui.load_pages.home_page)
         
-        # Open page 2
-        if btn.objectName() == "btn_page_2":
+        # Open profile page
+        if btn.objectName() == "btn_profile":
             # Activate menu button
             self.ui.left_menu.select_only_one(btn.objectName())
             
             # Load page
-            MainFunctions.set_page(self, self.ui.load_pages.page_2)
-        
-        # Open page 3
-        if btn.objectName() == "btn_page_3":
-            # Activate menu button
-            self.ui.left_menu.select_only_one(btn.objectName())
-            
-            # Load page
-            MainFunctions.set_page(self, self.ui.load_pages.page_3)
+            if self.pref["localId"] == None:
+                MainFunctions.set_page(self, self.ui.load_pages.login_page)
+            else:
+                if self.pref["usertype"] == "Teacher":
+                    MainFunctions.set_page(self, self.ui.load_pages.tc_profile_page)
+                elif self.pref["usertype"] == "Student":
+                    MainFunctions.set_page(self, self.ui.load_pages.st_profile_page)
         
         # Open about page
         if btn.objectName() == "btn_info":
@@ -75,7 +76,13 @@ class MainWindow(QMainWindow): # Main window
             self.ui.left_menu.select_only_one(btn.objectName())
             
             # Load page
-            MainFunctions.set_page(self, self.ui.load_pages.login_page)
+            if self.pref["localId"] == None:
+                MainFunctions.set_page(self, self.ui.load_pages.login_page)
+            else:
+                if self.pref["usertype"] == "Teacher":
+                    MainFunctions.set_page(self, self.ui.load_pages.tc_profile_page)
+                elif self.pref["usertype"] == "Student":
+                    MainFunctions.set_page(self, self.ui.load_pages.st_profile_page)
         
         # Handling settings menu
         if btn.objectName() == "btn_top_settings":

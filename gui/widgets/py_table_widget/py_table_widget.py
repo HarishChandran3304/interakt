@@ -2,7 +2,6 @@ from qt_core import *
 from . style import *
 
 
-# PY PUSH BUTTON
 class PyTableWidget(QTableWidget):
     def __init__(
         self, 
@@ -15,7 +14,7 @@ class PyTableWidget(QTableWidget):
         bottom_line_color = "#555",
         grid_line_color = "#555",
         scroll_bar_bg_color = "#FFF",
-        scroll_bar_btn_color = "#3333",
+        scroll_bar_btn_color = "#333",
         context_color = "#00ABE8"
     ):
         super().__init__()

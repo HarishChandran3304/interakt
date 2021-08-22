@@ -539,7 +539,8 @@ class SetupMainWindow:
             
             # 6) Student home page
             # Choose reward combo box
-            for rew in db.getrewards(self.pref["localId"]):
+            self.rewards = db.getrewards(self.pref["localId"])
+            for rew in self.rewards:
                 self.ui.load_pages.pick_reward.addItem(rew)
 
             # Redeem reward btn
@@ -551,6 +552,12 @@ class SetupMainWindow:
                         self.email_classcode = key
                         break
                 db.send_email(self.pref["localId"], self.email_classcode, rew.replace(":", ""))
+                for i in range(len(self.rewards)):
+                    if self.rewards[i] == rew:
+                        self.rewards.pop(i)
+                        self.ui.load_pages.pick_reward.removeItem(i)
+                        break
+
             self.redeem_btn = PyPushButton(
                 text="Redeem",
                 radius=12,

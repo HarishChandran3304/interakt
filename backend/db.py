@@ -59,9 +59,11 @@ def tc_get_classes(teacherid): # gets classcode for corresponding classnames
 def st_get_classes(studentid):
     a=database.child("Students").get().val()
     classes = {}
-    for key in a[studentid].keys():
-        if key!="Email" and key!="Name":
-            classes[key] = a[studentid][key]
+    stid = a.get(studentid)
+    if stid != None:
+        for key in stid:
+            if key!="Email" and key!="Name":
+                classes[key] = a[studentid][key]
     return classes
 
 def updaterewards(classcode):
@@ -106,7 +108,7 @@ def getrewards(studentid):# get studentid from login['localId']
             if k!="ClassName" and k!="Teacherid" and k!="Teacher" and k!="Rewards":
                 d=a[i]["Rewards"]
                 for j in d:
-                    if d[j][studentid]=="Redeemable":
+                    if d[j].get(studentid)=="Redeemable":
                         l.append(f"{classname}: {j}")
                 break
     

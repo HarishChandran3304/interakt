@@ -101,17 +101,6 @@ class SetupMainWindow:
         self.ui.left_column.clicked.connect(self.btn_clicked) # Connect left column button clicks
         self.ui.left_column.released.connect(self.btn_released) # Connect left column button releases
 
-        # Setup initial page
-        self.pref = json.load(open(r'UserPref/preferences.json'))
-        if self.pref["localId"] == None:
-            MainFunctions.set_page(self, self.ui.load_pages.login_page)
-        else:
-            if self.pref["usertype"] == "Teacher":
-                MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
-                self.classes = db.tc_get_classes(self.pref["localId"])
-            elif self.pref["usertype"] == "Student":
-                MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
-                self.classes = db.st_get_classes(self.pref["localId"])
             
         MainFunctions.set_left_column_menu(
             self,
@@ -152,7 +141,14 @@ class SetupMainWindow:
                 p = json.dumps(self.pref)
                 with open(r'UserPref/preferences.json', 'w') as f:
                     f.write(p)
-                MainFunctions.set_page(self, self.ui.load_pages.home_page)
+                if self.pref["usertype"] == "Teacher":
+                    self.classes = db.tc_get_classes(self.pref["localId"])
+                    setup_teacher_pages()
+                    MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
+                else:
+                    self.classes = db.tc_get_classes(self.pref["localId"])
+                    setup_student_pages()
+                    MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
         self.s_submit_btn = PyPushButton(
             text="Submit",
             radius=12,
@@ -210,7 +206,15 @@ class SetupMainWindow:
                 with open(r'UserPref/preferences.json', 'w') as f:
                     f.write(p)
                 if self.pref["usertype"] == "Teacher":
+                    self.classes = db.tc_get_classes(self.pref["localId"])
+                    setup_teacher_pages()
                     MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
+                else:
+                    self.classes = db.tc_get_classes(self.pref["localId"])
+                    setup_student_pages()
+                    MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
+                    
+                    
         self.l_submit_btn = PyPushButton(
             text="Submit",
             radius=12,
@@ -240,7 +244,7 @@ class SetupMainWindow:
         self.dont_have_btn.clicked.connect(redirect_to_signup_page)
         self.ui.load_pages.dont_have_layout.addWidget(self.dont_have_btn)
         
-        if self.pref["usertype"] == "Teacher":
+        def setup_teacher_pages():
             # 3) Teacher Home Page
             #Classes combo box
             for cl in self.classes.keys():
@@ -400,123 +404,137 @@ class SetupMainWindow:
             self.ui.load_pages.view_scroes_layout.addWidget(self.view_scores_btn)
         
         
-        # 5) Student profile page
-        # Classes Table
-        self.st_table = PyTableWidget(
-            radius = 8,
-            color = self.themes["app_color"]["text_foreground"],
-            selection_color = self.themes["app_color"]["context_color"],
-            bg_color = self.themes["app_color"]["bg_two"],
-            header_horizontal_color = self.themes["app_color"]["dark_two"],
-            header_vertical_color = self.themes["app_color"]["bg_three"],
-            bottom_line_color = self.themes["app_color"]["bg_three"],
-            grid_line_color = self.themes["app_color"]["bg_one"],
-            scroll_bar_bg_color = self.themes["app_color"]["bg_one"],
-            scroll_bar_btn_color = self.themes["app_color"]["dark_four"],
-            context_color = self.themes["app_color"]["context_color"]
-        )
-        def populate_table(classname, teacher, score, streak):
-                row_number = self.st_table.rowCount()
-                self.st_table.insertRow(row_number)
-                self.class_text = QTableWidgetItem()
-                self.class_text.setTextAlignment(Qt.AlignCenter)
-                self.class_text.setText(classname)
-                self.st_table.setItem(row_number, 0, self.class_text)
-                self.teacher_text = QTableWidgetItem()
-                self.teacher_text.setTextAlignment(Qt.AlignCenter)
-                self.teacher_text.setText(str(teacher))
-                self.st_table.setItem(row_number, 1, self.teacher_text)
-                self.score_text = QTableWidgetItem()
-                self.score_text.setTextAlignment(Qt.AlignCenter)
-                self.score_text.setText(str(score))
-                self.st_table.setItem(row_number, 2, self.score_text)
-                self.score_text = QTableWidgetItem()
-                self.score_text.setTextAlignment(Qt.AlignCenter)
-                self.score_text.setText(str(streak))
-                self.st_table.setItem(row_number, 3, self.score_text)
-                self.st_table.setRowHeight(row_number, 40)
-        self.st_table.setColumnCount(4)
-        self.st_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.st_table.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.st_table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        # Columns / Header
-        self.st_column_1 = QTableWidgetItem()
-        self.st_column_1.setTextAlignment(Qt.AlignCenter)
-        self.st_column_1.setText("Your Classes")
-        self.st_column_2 = QTableWidgetItem()
-        self.st_column_2.setTextAlignment(Qt.AlignCenter)
-        self.st_column_2.setText("Teacher")
-        self.st_column_3 = QTableWidgetItem()
-        self.st_column_3.setTextAlignment(Qt.AlignCenter)
-        self.st_column_3.setText("Score")
-        self.st_column_4 = QTableWidgetItem()
-        self.st_column_4.setTextAlignment(Qt.AlignCenter)
-        self.st_column_4.setText("Streak")
-        # Set column
-        self.st_table.setHorizontalHeaderItem(0, self.st_column_1)
-        self.st_table.setHorizontalHeaderItem(1, self.st_column_2)
-        self.st_table.setHorizontalHeaderItem(2, self.st_column_3)
-        self.st_table.setHorizontalHeaderItem(3, self.st_column_4)
-        # Populating table
-        for key, value in self.classes.items():
-            populate_table(value["ClassName"], db.getteachername(key), value["Score"], value["Streak"])
-        # Add to layout
-        self.ui.load_pages.st_table_layout.addWidget(self.st_table)
-        
-        # Class code input
-        self.class_code = QLineEdit()
-        self.class_code.setPlaceholderText("Enter class code")
-        self.class_code.setMinimumHeight(50)
-        self.class_code.setStyleSheet("border-radius: 12px; font-size: 25px; color:black;")
-        self.ui.load_pages.class_code_layout.addWidget(self.class_code)
-        
-        # Join class btn
-        def join_class():
-            code = self.class_code.text()
-            db.join_class(self.pref["localId"], code)
-            self.classes = db.st_get_classes(self.pref["localId"])
-            populate_table(self.classes[code]["ClassName"], db.getteachername(code), self.classes[code]["Score"], self.classes[code]["Streak"])
-            self.new_class.setText("")
-        self.join_class_btn = PyPushButton(
-            text="Join Class",
-            radius=12,
-            color=self.themes["app_color"]["text_foreground"],
-            bg_color=self.themes["app_color"]["dark_one"],
-            bg_color_hover=self.themes["app_color"]["context_hover"],
-            bg_color_pressed=self.themes["app_color"]["context_hover"],
-            font_size=35
+        def setup_student_pages():
+            # 5) Student profile page
+            # Classes Table
+            self.st_table = PyTableWidget(
+                radius = 8,
+                color = self.themes["app_color"]["text_foreground"],
+                selection_color = self.themes["app_color"]["context_color"],
+                bg_color = self.themes["app_color"]["bg_two"],
+                header_horizontal_color = self.themes["app_color"]["dark_two"],
+                header_vertical_color = self.themes["app_color"]["bg_three"],
+                bottom_line_color = self.themes["app_color"]["bg_three"],
+                grid_line_color = self.themes["app_color"]["bg_one"],
+                scroll_bar_bg_color = self.themes["app_color"]["bg_one"],
+                scroll_bar_btn_color = self.themes["app_color"]["dark_four"],
+                context_color = self.themes["app_color"]["context_color"]
             )
-        self.join_class_btn.setMinimumHeight(50)
-        self.join_class_btn.clicked.connect(join_class)
-        self.ui.load_pages.join_class_layout.addWidget(self.join_class_btn)
-        
-        
-        # 6) Student home page
-        # Choose reward combo box
-        def get_rewards():
-            return ["R1", "R2", "R3"]
-        rews = get_rewards()
-        for rew in rews:
-            self.ui.load_pages.pick_reward.addItem(rew)
+            def populate_table(classname, teacher, score, streak):
+                    row_number = self.st_table.rowCount()
+                    self.st_table.insertRow(row_number)
+                    self.class_text = QTableWidgetItem()
+                    self.class_text.setTextAlignment(Qt.AlignCenter)
+                    self.class_text.setText(classname)
+                    self.st_table.setItem(row_number, 0, self.class_text)
+                    self.teacher_text = QTableWidgetItem()
+                    self.teacher_text.setTextAlignment(Qt.AlignCenter)
+                    self.teacher_text.setText(str(teacher))
+                    self.st_table.setItem(row_number, 1, self.teacher_text)
+                    self.score_text = QTableWidgetItem()
+                    self.score_text.setTextAlignment(Qt.AlignCenter)
+                    self.score_text.setText(str(score))
+                    self.st_table.setItem(row_number, 2, self.score_text)
+                    self.score_text = QTableWidgetItem()
+                    self.score_text.setTextAlignment(Qt.AlignCenter)
+                    self.score_text.setText(str(streak))
+                    self.st_table.setItem(row_number, 3, self.score_text)
+                    self.st_table.setRowHeight(row_number, 40)
+            self.st_table.setColumnCount(4)
+            self.st_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.st_table.setSelectionMode(QAbstractItemView.ExtendedSelection)
+            self.st_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+            # Columns / Header
+            self.st_column_1 = QTableWidgetItem()
+            self.st_column_1.setTextAlignment(Qt.AlignCenter)
+            self.st_column_1.setText("Your Classes")
+            self.st_column_2 = QTableWidgetItem()
+            self.st_column_2.setTextAlignment(Qt.AlignCenter)
+            self.st_column_2.setText("Teacher")
+            self.st_column_3 = QTableWidgetItem()
+            self.st_column_3.setTextAlignment(Qt.AlignCenter)
+            self.st_column_3.setText("Score")
+            self.st_column_4 = QTableWidgetItem()
+            self.st_column_4.setTextAlignment(Qt.AlignCenter)
+            self.st_column_4.setText("Streak")
+            # Set column
+            self.st_table.setHorizontalHeaderItem(0, self.st_column_1)
+            self.st_table.setHorizontalHeaderItem(1, self.st_column_2)
+            self.st_table.setHorizontalHeaderItem(2, self.st_column_3)
+            self.st_table.setHorizontalHeaderItem(3, self.st_column_4)
+            # Populating table
+            for key, value in self.classes.items():
+                populate_table(value["ClassName"], db.getteachername(key), value["Score"], value["Streak"])
+            # Add to layout
+            self.ui.load_pages.st_table_layout.addWidget(self.st_table)
+            
+            # Class code input
+            self.class_code = QLineEdit()
+            self.class_code.setPlaceholderText("Enter class code")
+            self.class_code.setMinimumHeight(50)
+            self.class_code.setStyleSheet("border-radius: 12px; font-size: 25px; color:black;")
+            self.ui.load_pages.class_code_layout.addWidget(self.class_code)
+            
+            # Join class btn
+            def join_class():
+                code = self.class_code.text()
+                db.join_class(self.pref["localId"], code)
+                self.classes = db.st_get_classes(self.pref["localId"])
+                populate_table(self.classes[code]["ClassName"], db.getteachername(code), self.classes[code]["Score"], self.classes[code]["Streak"])
+                self.new_class.setText("")
+            self.join_class_btn = PyPushButton(
+                text="Join Class",
+                radius=12,
+                color=self.themes["app_color"]["text_foreground"],
+                bg_color=self.themes["app_color"]["dark_one"],
+                bg_color_hover=self.themes["app_color"]["context_hover"],
+                bg_color_pressed=self.themes["app_color"]["context_hover"],
+                font_size=35
+                )
+            self.join_class_btn.setMinimumHeight(50)
+            self.join_class_btn.clicked.connect(join_class)
+            self.ui.load_pages.join_class_layout.addWidget(self.join_class_btn)
+            
+            
+            # 6) Student home page
+            # Choose reward combo box
+            def get_rewards():
+                return ["R1", "R2", "R3"]
+            rews = get_rewards()
+            for rew in rews:
+                self.ui.load_pages.pick_reward.addItem(rew)
 
-        # Redeem reward btn
-        def redeem():
-            rew = self.ui.load_pages.pick_reward.itemText()
-            pass
-        self.redeem_btn = PyPushButton(
-            text="Redeem",
-            radius=12,
-            color=self.themes["app_color"]["text_foreground"],
-            bg_color=self.themes["app_color"]["dark_one"],
-            bg_color_hover=self.themes["app_color"]["context_hover"],
-            bg_color_pressed=self.themes["app_color"]["context_hover"],
-            font_size=35
-            )
-        self.redeem_btn.setMinimumHeight(50)
-        self.redeem_btn.clicked.connect(redeem)
-        self.ui.load_pages.redeem_layout.addWidget(self.redeem_btn)
+            # Redeem reward btn
+            def redeem():
+                rew = self.ui.load_pages.pick_reward.itemText()
+                pass
+            self.redeem_btn = PyPushButton(
+                text="Redeem",
+                radius=12,
+                color=self.themes["app_color"]["text_foreground"],
+                bg_color=self.themes["app_color"]["dark_one"],
+                bg_color_hover=self.themes["app_color"]["context_hover"],
+                bg_color_pressed=self.themes["app_color"]["context_hover"],
+                font_size=35
+                )
+            self.redeem_btn.setMinimumHeight(50)
+            self.redeem_btn.clicked.connect(redeem)
+            self.ui.load_pages.redeem_layout.addWidget(self.redeem_btn)
         
-        
+        # Setup initial page
+        self.pref = json.load(open(r'UserPref/preferences.json'))
+        if self.pref["localId"] == None:
+            MainFunctions.set_page(self, self.ui.load_pages.login_page)
+        else:
+            if self.pref["usertype"] == "Teacher":
+                self.classes = db.tc_get_classes(self.pref["localId"])
+                setup_teacher_pages()
+                MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
+            elif self.pref["usertype"] == "Student":
+                self.classes = db.st_get_classes(self.pref["localId"])
+                setup_teacher_pages()
+                MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
+                
     def resize_grips(self): # Handle window resize
         if self.settings["custom_title_bar"]:
             self.left_grip.setGeometry(5, 10, 10, self.height())

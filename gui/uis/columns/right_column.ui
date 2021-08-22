@@ -52,20 +52,25 @@
         <number>5</number>
        </property>
        <item>
-        <widget class="QLabel" name="label_1">
+        <widget class="QPushButton" name="logout">
+         <property name="minimumSize">
+          <size>
+           <width>45</width>
+           <height>45</height>
+          </size>
+         </property>
          <property name="font">
           <font>
-           <pointsize>16</pointsize>
+           <pointsize>25</pointsize>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">font-size: 16pt</string>
+          <string notr="true">background-color: rgb(222, 0, 3);
+border-radius: 12
+</string>
          </property>
          <property name="text">
-          <string>Settings Menu</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <string>Logout</string>
          </property>
         </widget>
        </item>

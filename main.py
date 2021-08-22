@@ -44,6 +44,10 @@ class MainWindow(QMainWindow): # Main window
         '''Gets name of the clicked button'''
         btn = SetupMainWindow.setup_btns(self)
         
+        # Logout button
+        if btn.objectName() == "logout":
+            print("Loging out")
+        
         # Open home page
         if btn.objectName() == "btn_home":
             # Activate menu button

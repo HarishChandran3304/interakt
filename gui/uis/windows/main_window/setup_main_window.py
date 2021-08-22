@@ -9,8 +9,8 @@ from gui.core.json_themes import Themes
 from gui.widgets import *
 from . ui_main import *
 from . functions_main_window import *
-import backend.auth as auth
 import json
+from backend import auth, db
 
 
 # CLASSES
@@ -108,8 +108,10 @@ class SetupMainWindow:
         else:
             if self.pref["usertype"] == "Teacher":
                 MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
+                self.classes = db.tc_get_classes(self.pref["localId"])
             elif self.pref["usertype"] == "Student":
                 MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
+                self.classes = db.st_get_classes(self.pref["localId"])
             
         MainFunctions.set_left_column_menu(
             self,
@@ -240,6 +242,9 @@ class SetupMainWindow:
         
         
         # 3) Teacher Home Page
+        #Classes combo box
+        for cl in self.classes.keys():
+            self.ui.load_pages.tc_select_cl.addItem(cl)
         #Next button
         def next_student():
             pass
@@ -255,6 +260,22 @@ class SetupMainWindow:
         self.next_st_btn.setMinimumHeight(50)
         self.next_st_btn.clicked.connect(next_student)
         self.ui.load_pages.next_st_layout.addWidget(self.next_st_btn)
+        
+        #Start Class button
+        def start_class(clcode):
+            pass
+        self.start_cl_btn = PyPushButton(
+            text="Start Class",
+            radius=12,
+            color=self.themes["app_color"]["text_foreground"],
+            bg_color=self.themes["app_color"]["dark_one"],
+            bg_color_hover=self.themes["app_color"]["green"],
+            bg_color_pressed=self.themes["app_color"]["green"],
+            font_size=35
+            )
+        self.start_cl_btn.setMinimumHeight(50)
+        self.start_cl_btn.clicked.connect(start_class)
+        self.ui.load_pages.start_cl_layout.addWidget(self.start_cl_btn)
         
         #End Class button
         def end_class():
@@ -273,26 +294,12 @@ class SetupMainWindow:
         self.end_cl_btn.clicked.connect(end_class)
         self.ui.load_pages.end_cl_layout.addWidget(self.end_cl_btn)
         
-        #Start Class button
-        def start_class():
-            
-            
-            pass
-        self.start_cl_btn = PyPushButton(
-            text="Start Class",
-            radius=12,
-            color=self.themes["app_color"]["text_foreground"],
-            bg_color=self.themes["app_color"]["dark_one"],
-            bg_color_hover=self.themes["app_color"]["green"],
-            bg_color_pressed=self.themes["app_color"]["green"],
-            font_size=35
-            )
-        self.start_cl_btn.setMinimumHeight(50)
-        self.start_cl_btn.clicked.connect(start_class)
-        self.ui.load_pages.start_cl_layout.addWidget(self.start_cl_btn)
         
         
         # 4) Teacher profile page
+        #Classes combo box
+        for cl in self.classes.keys():
+            self.ui.load_pages.tc_class_select.addItem(cl)
         # Classes Table
         self.tc_table = PyTableWidget(
             radius = 8,
@@ -325,26 +332,27 @@ class SetupMainWindow:
         self.tc_table.setHorizontalHeaderItem(0, self.tc_column_1)
         self.tc_table.setHorizontalHeaderItem(1, self.tc_column_2)
         self.tc_table.setHorizontalHeaderItem(2, self.tc_column_3)
+        # Add to layout
+        self.ui.load_pages.tc_table_layout.addWidget(self.tc_table)
         # Populating table
-        for x in range(5):
+        def populate_table(classname, classcode, classstrength):
             row_number = self.tc_table.rowCount()
             self.tc_table.insertRow(row_number)
             self.class_text = QTableWidgetItem()
             self.class_text.setTextAlignment(Qt.AlignCenter)
-            self.class_text.setText("CS")
+            self.class_text.setText(classname)
             self.tc_table.setItem(row_number, 0, self.class_text)
             self.code_text = QTableWidgetItem()
             self.code_text.setTextAlignment(Qt.AlignCenter)
-            self.code_text.setText("agbhrf829g")
+            self.code_text.setText(classcode)
             self.tc_table.setItem(row_number, 1, self.code_text)
             self.strength_text = QTableWidgetItem()
             self.strength_text.setTextAlignment(Qt.AlignCenter)
-            self.strength_text.setText("40")
+            self.strength_text.setText(str(db.getstrength(classcode)))
             self.tc_table.setItem(row_number, 2, self.strength_text)
-            
             self.tc_table.setRowHeight(row_number, 40)
-        # Add to layout
-        self.ui.load_pages.tc_table_layout.addWidget(self.tc_table)
+        for cl in self.classes.keys():
+            populate_table(cl, self.classes[cl], 40)
         
         # Class name input
         self.new_class = QLineEdit()
@@ -355,7 +363,13 @@ class SetupMainWindow:
         
         # New class btn
         def new_class():
-            pass
+            classname = self.new_class.text()
+            classcode = db.create_class(classname, self.pref["localId"])
+            self.classes[classname] = classcode
+            populate_table(classname, classcode, 40)
+            self.ui.load_pages.tc_select_cl.addItem(classname)
+            self.ui.load_pages.tc_class_select.addItem(classname)
+            self.new_class.setText("")
         self.new_class_btn = PyPushButton(
             text="Create Class",
             radius=12,

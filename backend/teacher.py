@@ -1,7 +1,6 @@
 import csv
-import copy
 import pyrebase
-import data
+import db
 import os
 firebaseConfig={'apiKey': "AIzaSyA-s0Bjin-4gmuOUc_PVXRmY0dMHFMk_BE",
     'authDomain': "hackathon-9bd4b.firebaseapp.com",
@@ -91,15 +90,15 @@ def endclass(score,name,streakcalc,userid,filename,classcode):
         writer.writerow(["Name","Score","Streak"])
         for i in range(len(score)):
             writer.writerow([name[i],score[i],streakcalc[i]])
-            data.update_student_score(score[i],streakcalc[i],classcode,userid[i])
-        data.rewards(classcode)
+            db.update_student_score(score[i],streakcalc[i],classcode,userid[i])
+        db.rewards(classcode)
 def openfile(file):
     os.startfile(file)
 email=input("Enter email:")
 password = input(" Enter Your Password : ")
 login= auth.sign_in_with_email_and_password(email,password)
 teacherid=login['localId']
-classcodes=data.get_classcode(teacherid)
+classcodes=db.get_classcode(teacherid)
 classname=input("Enter classname:")
 classcode=classcodes[classname]
 startclass(classcode)

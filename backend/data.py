@@ -17,22 +17,30 @@ def update_student_score(score,streak,classcode,student_id): #to update student 
     database.child("Students").child(student_id).child(classcode).update({"Score":score,"Streak":streak})
         
 
-def add_teacher(teacherid,teacheremail,classnames,teachername):#to add teachers to database
-    database.child("Teachers").child(teacherid).set({"Name":teachername,"Email":teacheremail,"Classes":classnames})
-    for i in classnames:
-        database.child("Classes").push({"Teacher":teachername,"ClassName":i,"Teacherid":teacherid,"Rewards":{"R1":{"Score":100},"R2":{"Score":200},"R3":{"Score":300},"R4":{"Score":400},"R5":{"Score":400}}})
+def add_teacher(teacherid,teacheremail,teachername):#to add teachers to database
+    database.child("Teachers").child(teacherid).set({"Name":teachername,"Email":teacheremail})
+    
+def add_classes(classname,teacherid):
     a=database.child("Classes").get().val()
+    b=database.child("Teachers").child(teacherid).child("Classes").get().val()
+    b.update({len(b):classname})
+    database.child("Teachers").child(teacherid).child("Classes").update(b)
+    teachername=database.child("Teachers").child(teacherid).get().val()["Name"]
+    
+    database.child("Classes").push({"Teacher":teachername,"Teacherid":teacherid,"ClassName":classname,"Rewards":{"R1":{"Score":100},"R2":{"Score":200},"R3":{"Score":300},"R4":{"Score":400},"R5":{"Score":400}}})
     code={}
     for i in a:
         code.update({a[i]["ClassName"]:i})
     return code # returns code for classnames
 
-def studentdata(studentid,studentname,classcode,studentemail,classname): #adds new student
+def studentdata(studentid,studentname,studentemail): #adds new student
     database.child("Students").child(studentid).set({"Name":studentname,"Email":studentemail})
+def join_class(studentid,classcode): # to join a class with classcode
+    classname=database.child("Classes").child(classcode).get().val()["ClassName"]
     database.child("Students").child(studentid).child(classcode).update({"ClassName":classname,"Score":0,"Streak":0})
     a=database.child("Classes").child(classcode).get().val()
-    
-    a.update({studentid:{"Name":studentname,"Score":0,"Streak":0}})
+    name=database.child("Students").child(studentid).get().val()["Name"]
+    a.update({studentid:{"Name":name,"Score":0,"Streak":0}})
     database.child("Classes").child(classcode).set(a)
     
 def get_classcode(teacherid): # gets classcode for corresponding classnames
@@ -114,13 +122,14 @@ if __name__=="__main__":
             studentname=input()
             studentid=user["localId"]
             studentemail=user["email"]
-            for i in range(int(input("Enter number of subjects"))):
-                print("Enter class code:")
-                classcode=input()
-                classname=database.child("Classes").child(classcode).get().val()["ClassName"]
+            
                 
-                studentdata(studentid=studentid,classcode=classcode,studentemail=studentemail,studentname=studentname,classname=classname)
+            
+            studentdata(studentid=studentid,studentemail=studentemail,studentname=studentname)
+            classcode=input("Enter classcode to join:")
+            join_class(classcode=classcode,studentid=studentid)
     elif choice==2: #adds teacher to classes and teachers nodes
+        
         email = input(" Enter Your Email Address : ")
         password=input('Enter your password: ')
         confirmpass=input('Confirm Password: ')
@@ -135,8 +144,10 @@ if __name__=="__main__":
             teacherid=user["localId"]
             teacheremail=user["email"]
             for i in range(int(input("Enter number of classes:"))):
-                classnames+=[input("Enter class code:")]
-            print(add_teacher(teacherid=teacherid,teacheremail=teacheremail,classnames=classnames,teachername=name))
+                classnames+=[input("Enter class name:")]
+        
+        add_teacher(teacherid=teacherid,teacheremail=email,teachername="Ross")
+        add_classes(classnames)
                 
     elif choice==3: #--> to get classnames and classcode for teachers
         email=input("Enter email:")
@@ -151,6 +162,8 @@ if __name__=="__main__":
         login= auth.sign_in_with_email_and_password(email,password)
         studentid=login['localId']
         print(student_scores(studentid))
+    classcode=input("Enter classcode to join:")
+    join_class(classcode=classcode,studentid='sLISGuQLrKU1Tunqdn5KGJMYEfI2')
         
 '''
 after signing in check whether the user is teacher by checkin login['localId'] in database.child('Teachers') or database.child('Students')

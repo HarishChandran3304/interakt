@@ -27,9 +27,9 @@ def add_teacher(teacherid,teacheremail,classnames,teachername):#to add teachers 
         code.update({a[i]["ClassName"]:i})
     return code # returns code for classnames
 
-def studentdata(studentid,studentname,classcode,studentemail): #adds new student
+def studentdata(studentid,studentname,classcode,studentemail,classname): #adds new student
     database.child("Students").child(studentid).set({"Name":studentname,"Email":studentemail})
-    database.child("Students").child(studentid).child(classcode).update({"Score":0,"Streak":0})
+    database.child("Students").child(studentid).child(classcode).update({"ClassName":classname,"Score":0,"Streak":0})
     a=database.child("Classes").child(classcode).get().val()
     
     a.update({studentid:{"Name":studentname,"Score":0,"Streak":0}})
@@ -64,7 +64,17 @@ def rewards(classcode):
                         
     database.child("Classes").update(a)
             
-            
+def student_scores(studentid):
+    a=database.child("Students").child(studentid).get().val()
+    name=a["Name"]
+    for i in a:
+        
+        if i!="Email" and i!="Name":
+            classname=a[i].get("ClassName")
+            scores=a[i]["Score"]
+            Streak=a[i]["Streak"]
+            print(f"{name}|{classname}|{scores}|{Streak}")
+        
 def displayrewardstatus(studentid,classname):# get studentid from login['localId']
     a=database.child("Classes").get().val()
     for i in a:
@@ -107,7 +117,9 @@ if __name__=="__main__":
             for i in range(int(input("Enter number of subjects"))):
                 print("Enter class code:")
                 classcode=input()
-                studentdata(studentid=studentid,classcode=classcode,studentemail=studentemail,studentname=studentname)
+                classname=database.child("Classes").child(classcode).get().val()["ClassName"]
+                
+                studentdata(studentid=studentid,classcode=classcode,studentemail=studentemail,studentname=studentname,classname=classname)
     elif choice==2: #adds teacher to classes and teachers nodes
         email = input(" Enter Your Email Address : ")
         password=input('Enter your password: ')
@@ -133,3 +145,13 @@ if __name__=="__main__":
         teacherid=login['localId']
         classnames=get_classcode(teacherid) #--> dictionary with classname as keys and classcodes as values
         print(classnames)
+    elif choice==4: # to get student's scores and streaks
+        email=input("Enter email:")
+        password = input(" Enter Your Password : ")
+        login= auth.sign_in_with_email_and_password(email,password)
+        studentid=login['localId']
+        print(student_scores(studentid))
+        
+'''
+after signing in check whether the user is teacher by checkin login['localId'] in database.child('Teachers') or database.child('Students')
+'''

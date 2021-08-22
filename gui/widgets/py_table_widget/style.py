@@ -1,7 +1,4 @@
-
 style = '''
-QTableWidget */
-
 QTableWidget {{	
 	background-color: {_bg_color};
 	padding: 5px;
@@ -53,7 +50,6 @@ QHeaderView::section:vertical
 }}
 
 
-ScrollBars */
 QScrollBar:horizontal {{
     border: none;
     background: {_scroll_bar_bg_color};

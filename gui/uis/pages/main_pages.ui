@@ -35,9 +35,9 @@
       <string notr="true">text-align: center;</string>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
-     <widget class="QWidget" name="teacher_home_page">
+     <widget class="QWidget" name="tc_home_page">
       <property name="styleSheet">
        <string notr="true">font-size: 14pt</string>
       </property>
@@ -46,7 +46,7 @@
         <rect>
          <x>-4</x>
          <y>-1</y>
-         <width>1081</width>
+         <width>1181</width>
          <height>141</height>
         </rect>
        </property>
@@ -274,7 +274,7 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="start_class_layout">
+       <layout class="QVBoxLayout" name="start_cl_layout">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -292,13 +292,13 @@
         </property>
        </layout>
       </widget>
-      <widget class="QComboBox" name="tc_select_class">
+      <widget class="QComboBox" name="tc_select_cl">
        <property name="geometry">
         <rect>
          <x>550</x>
-         <y>520</y>
+         <y>510</y>
          <width>271</width>
-         <height>51</height>
+         <height>61</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -335,7 +335,7 @@ text-align: center;</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="end_class_layout">
+       <layout class="QVBoxLayout" name="end_cl_layout">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -353,11 +353,11 @@ text-align: center;</string>
         </property>
        </layout>
       </widget>
-      <widget class="QFrame" name="end_class_frame_2">
+      <widget class="QFrame" name="next_st_frame">
        <property name="geometry">
         <rect>
-         <x>670</x>
-         <y>350</y>
+         <x>680</x>
+         <y>360</y>
          <width>280</width>
          <height>80</height>
         </rect>
@@ -380,7 +380,7 @@ text-align: center;</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="end_class_layout_2">
+       <layout class="QVBoxLayout" name="next_st_layout">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -399,43 +399,458 @@ text-align: center;</string>
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="page_2">
-      <widget class="QLabel" name="label_2">
+     <widget class="QWidget" name="tc_profile_page">
+      <widget class="QComboBox" name="tc_class_select">
        <property name="geometry">
         <rect>
-         <x>290</x>
-         <y>230</y>
-         <width>271</width>
-         <height>101</height>
+         <x>660</x>
+         <y>540</y>
+         <width>251</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-size: 35px;
+background-color: rgb(27, 30, 35);
+color: rgb(138, 149, 170);
+text-align: center;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="tc_profile_label">
+       <property name="geometry">
+        <rect>
+         <x>-4</x>
+         <y>0</y>
+         <width>1181</width>
+         <height>141</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>14</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
+       <property name="styleSheet">
+        <string notr="true">font-size: 100px;</string>
+       </property>
        <property name="text">
-        <string>Page 2</string>
+        <string>Profile</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
+      <widget class="QFrame" name="new_class_frame">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>530</y>
+         <width>250</width>
+         <height>60</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="new_class_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QFrame" name="new_class_btn_frame">
+       <property name="geometry">
+        <rect>
+         <x>270</x>
+         <y>530</y>
+         <width>250</width>
+         <height>60</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="new_class_btn_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QFrame" name="view_scores_frame">
+       <property name="geometry">
+        <rect>
+         <x>920</x>
+         <y>530</y>
+         <width>250</width>
+         <height>60</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="view_scroes_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>49</x>
+         <y>159</y>
+         <width>1071</width>
+         <height>331</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="tc_table_layout"/>
+      </widget>
      </widget>
-     <widget class="QWidget" name="page_3">
+     <widget class="QWidget" name="st_home_page">
+      <widget class="QLabel" name="tc_home_label_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1181</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-size: 100px;</string>
+       </property>
+       <property name="text">
+        <string>Home</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget_3">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>290</y>
+         <width>801</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="l_user_type_label_2">
+          <property name="font">
+           <font>
+            <pointsize>-1</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-size: 50px;</string>
+          </property>
+          <property name="text">
+           <string>Pick A Reward</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="pick_reward">
+          <property name="styleSheet">
+           <string notr="true">font-size: 35px;
+background-color: rgb(27, 30, 35);
+color: rgb(138, 149, 170);
+text-align: center;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QLabel" name="l_user_type_label_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>170</y>
+         <width>1181</width>
+         <height>87</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-size: 30px;</string>
+       </property>
+       <property name="text">
+        <string>Redeem rewards with the scores that you earn from your interactions in class!</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QFrame" name="redeem_frame">
+       <property name="geometry">
+        <rect>
+         <x>450</x>
+         <y>490</y>
+         <width>280</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>280</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>280</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="redeem_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="st_profile_page">
       <property name="styleSheet">
        <string notr="true">QFrame {
 	font-size: 16pt;
 }</string>
       </property>
-      <widget class="QLabel" name="label_3">
+      <widget class="QWidget" name="verticalLayoutWidget_2">
        <property name="geometry">
         <rect>
-         <x>250</x>
-         <y>220</y>
-         <width>381</width>
+         <x>49</x>
+         <y>159</y>
+         <width>1071</width>
+         <height>331</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="st_table_layout"/>
+      </widget>
+      <widget class="QFrame" name="class_code_frame">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>530</y>
+         <width>250</width>
+         <height>60</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="class_code_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QFrame" name="join_class_frame">
+       <property name="geometry">
+        <rect>
+         <x>630</x>
+         <y>530</y>
+         <width>250</width>
+         <height>60</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>250</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="join_class_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QLabel" name="st_profile_label">
+       <property name="geometry">
+        <rect>
+         <x>-4</x>
+         <y>0</y>
+         <width>1181</width>
          <height>141</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-size: 100px;</string>
+       </property>
        <property name="text">
-        <string>Page 3</string>
+        <string>Profile</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </widget>
@@ -587,7 +1002,7 @@ text-align: center;</string>
         <rect>
          <x>-4</x>
          <y>-1</y>
-         <width>1081</width>
+         <width>1181</width>
          <height>141</height>
         </rect>
        </property>
@@ -609,7 +1024,7 @@ text-align: center;</string>
       <widget class="QFrame" name="s_submit_frame">
        <property name="geometry">
         <rect>
-         <x>390</x>
+         <x>440</x>
          <y>490</y>
          <width>280</width>
          <height>80</height>
@@ -762,7 +1177,7 @@ text-align: center;</string>
         <rect>
          <x>-4</x>
          <y>-1</y>
-         <width>1081</width>
+         <width>1181</width>
          <height>141</height>
         </rect>
        </property>
@@ -1021,7 +1436,7 @@ text-align: center;</string>
       <widget class="QFrame" name="l_submit_frame">
        <property name="geometry">
         <rect>
-         <x>390</x>
+         <x>440</x>
          <y>490</y>
          <width>280</width>
          <height>80</height>

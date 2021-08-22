@@ -1,5 +1,6 @@
 from urllib.parse import non_hierarchical
 import pyrebase
+import os, csv
 firebaseConfig={'apiKey': "AIzaSyA-s0Bjin-4gmuOUc_PVXRmY0dMHFMk_BE",
     'authDomain': "hackathon-9bd4b.firebaseapp.com",
     'databaseURL': "https://hackathon-9bd4b-default-rtdb.firebaseio.com",
@@ -30,7 +31,7 @@ def create_class(classname,teacherid):
     database.child("Teachers").child(teacherid).child("Classes").set(b)
     teachername=database.child("Teachers").child(teacherid).get().val()["Name"]
     
-    database.child("Classes").push({"Teacher":teachername,"Teacherid":teacherid,"ClassName":classname,"Rewards":{"R1":{"Score":100},"R2":{"Score":200},"R3":{"Score":300},"R4":{"Score":400},"R5":{"Score":400}}})
+    database.child("Classes").push({"Teacher":teachername,"Teacherid":teacherid,"ClassName":classname,"Rewards":{"Waive attendance for 1 class":{"Score":150},"+2 Test Marks":{"Score":200},"R3":{"Score":250},"R4":{"Score":300}, "Change Teacher":{"Score":10000}}})
     a=database.child("Classes").get().val()
     code={}
     for i in a:
@@ -63,7 +64,7 @@ def st_get_classes(studentid):
             classes[key] = a[studentid][key]
     return classes
 
-def rewards(classcode):
+def updaterewards(classcode):
     #calling this function after every class ends
     a=database.child("Classes").get().val()
     for i in a:
@@ -93,24 +94,24 @@ def student_scores(studentid):
             classname=a[i].get("ClassName")
             scores=a[i]["Score"]
             Streak=a[i]["Streak"]
-            print(f"{name}|{classname}|{scores}|{Streak}")
+            # print(f"{name}|{classname}|{scores}|{Streak}")
 
         
-def displayrewardstatus(studentid,classname):# get studentid from login['localId']
+def getrewards(studentid):# get studentid from login['localId']
     a=database.child("Classes").get().val()
-
+    l = []
     for i in a:
-        if a[i]["ClassName"]==classname:
-            for k in a[i]:
-                if k!="ClassName" and k!="Teacherid" and k!="Teacher" and k!="Rewards":
-                    score=a[i][k]["Score"]
-                    d=a[i]["Rewards"]
-                    for j in d:
-                        print(d[j],d[j][studentid])
-                        if d[j][studentid]=="Redeemable":
-                            y=input('Do you wanna redeem it:').lower()
-                            if y=="yes":
-                                a[i]["Rewards"][j].update({studentid:"Already Redeemed"})
+        classname = a[i]["ClassName"]
+        for k in a[i]:
+            if k!="ClassName" and k!="Teacherid" and k!="Teacher" and k!="Rewards":
+                d=a[i]["Rewards"]
+                for j in d:
+                    if d[j][studentid]=="Redeemable":
+                        l.append(f"{classname}: {j}")
+                break
+    
+    return l
+    
 
 def getstrength(classcode):
     a=database.child("Classes").get().val()
@@ -122,6 +123,30 @@ def getteachername(classcode):
     a=database.child("Classes").get().val()
     return a[classcode]["Teacher"]
     
+
+def teacher_scores(classcode):
+    a=database.child("Classes").get().val()
+    L={}
+    for j in a:
+        if j==classcode:
+            for i in a[j]:
+                if i!="ClassName" and i!="Teacherid" and i!="Teacher" and i!="Rewards":
+                    L.update({i:[a[j][i]["Name"],a[j][i]["Score"]]})
+
+            break
+    return L
+
+def show_scores(filename,classcode):
+    with open(filename,"w",newline="") as fh:
+        writer=csv.writer(fh)
+        writer.writerow(["Name","Score"])
+        a=teacher_scores(classcode) #"-MhgMi6vZn4-xfOcyyoC"
+        for i in a:
+            
+            name=a[i][0]
+            score=a[i][1]
+            writer.writerow([name,score])
+    os.startfile(filename)
                             
 
 # print(getstrength("-MhgMi6vZn4-xfOcyyoC"))
@@ -130,8 +155,9 @@ def getteachername(classcode):
 # print(tc_get_classes("0vMtR9S3Medc4lYhpfPYz9L7sv03"))
 # print(getclassdetails("-MhgMi6vZn4-xfOcyyoC"))
 # print(st_get_classes("-MhgMi6vZn4-xfOcyyoC"))
-                        
-    
+# print(displayrewardstatus("LuuI5235FPO8fjiPbuk99OCplLf1"))
+
+# show_scores("scores.csv", "-MhgMi6vZn4-xfOcyyoC")
                     
     
 # def lastclass():

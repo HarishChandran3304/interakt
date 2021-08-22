@@ -254,7 +254,7 @@ class SetupMainWindow:
             #Start Class button
             def start_class(clcode):
                 self.i = 0
-                self.name, self.localid, self.score, self.streak = teacher.reading(self.classes[self.ui.load_pages.tc_class_select.currentText()])
+                self.name, self.localid, self.score, self.streak = teacher.reading(self.classes[self.ui.load_pages.tc_select_cl.currentText()])
                 self.ui.load_pages.st_name_label.setText(self.name[self.i])
                 
                 
@@ -274,7 +274,8 @@ class SetupMainWindow:
             #End Class button
             def end_class():
                 self.ui.load_pages.st_name_label.setText("[Start a class first]")
-                db.update_student_scores(self.score, self.streak, self.classes[self.ui.load_pages.tc_class_select.currentText()], self.localid)
+                db.update_student_scores(self.score, self.streak, self.classes[self.ui.load_pages.tc_select_cl.currentText()], self.localid)
+                db.updaterewards(self.classes[self.ui.load_pages.tc_select_cl.currentText()])
             self.end_cl_btn = PyPushButton(
                 text="End Class",
                 radius=12,
@@ -311,7 +312,7 @@ class SetupMainWindow:
                 if self.sc > 3:
                     self.streak[self.i] += 1
                     if self.streak[self.i] % 5 == 0 and self.streak[self.i] != 0:
-                        self.score[self.i] += 5
+                        self.score[self.i] += 4+self.streak[self.i]//5
                 else:
                     self.streak[self.i] = 0
                 self.score[self.i] += self.sc
@@ -425,7 +426,8 @@ class SetupMainWindow:
             
             # View scores btn
             def view_scores():
-                pass
+                db.show_scores(str(self.ui.load_pages.tc_class_select.currentText())+".csv", self.classes[self.ui.load_pages.tc_class_select.currentText()])
+                               
             self.view_scores_btn = PyPushButton(
                 text="View Scores",
                 radius=12,
@@ -534,10 +536,7 @@ class SetupMainWindow:
             
             # 6) Student home page
             # Choose reward combo box
-            def get_rewards():
-                return ["R1", "R2", "R3"]
-            rews = get_rewards()
-            for rew in rews:
+            for rew in db.getrewards(self.pref["localId"]):
                 self.ui.load_pages.pick_reward.addItem(rew)
 
             # Redeem reward btn

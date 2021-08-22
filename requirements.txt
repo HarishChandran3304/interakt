@@ -28,3 +28,5 @@ shiboken6==6.1.2
 six==1.16.0
 urllib3==1.26.6
 wrapt==1.12.1
+smtplib==1.0.1
+ssl==1.1.0

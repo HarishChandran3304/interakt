@@ -1,6 +1,6 @@
 from urllib.parse import non_hierarchical
 import pyrebase
-import os, csv
+import os, csv, smtplib, ssl
 firebaseConfig={'apiKey': "AIzaSyA-s0Bjin-4gmuOUc_PVXRmY0dMHFMk_BE",
     'authDomain': "hackathon-9bd4b.firebaseapp.com",
     'databaseURL': "https://hackathon-9bd4b-default-rtdb.firebaseio.com",
@@ -38,7 +38,7 @@ def create_class(classname,teacherid):
         code.update({a[i]["ClassName"]:i})
     return code[classname]
 
-def studentdata(studentid,studentname,studentemail): #adds new student
+def add_student(studentid,studentemail,studentname): #adds new student
     database.child("Students").child(studentid).set({"Name":studentname,"Email":studentemail})
 def join_class(studentid,classcode): # to join a class with classcode
     classname=database.child("Classes").child(classcode).get().val()["ClassName"]
@@ -50,7 +50,7 @@ def join_class(studentid,classcode): # to join a class with classcode
     
 def tc_get_classes(teacherid): # gets classcode for corresponding classnames
     a=database.child("Classes").get().val()
-    classes ={ }
+    classes ={}
     for i in a:
         if a[i]["Teacherid"]==teacherid:
             classes.update({a[i]["ClassName"]:i})
@@ -147,6 +147,19 @@ def show_scores(filename,classcode):
             score=a[i][1]
             writer.writerow([name,score])
     os.startfile(filename)
+
+def send_email(studentid,classcode,reward):
+    a=database.child("Classes").child(classcode).get().val()["Teacherid"]
+    b=database.child("Teachers").child(a).get().val()["Email"]
+    studentname=database.child("Students").child(studentid).get().val()["Name"]
+    port = 465  # For SSL
+    password = "BBChk^123"
+    context = ssl.create_default_context()
+    message=f"{studentname} has redeemed {reward}"
+    print(message)
+    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+        server.login("BBC.hackathon@gmail.com", password)
+        server.sendmail("BBC.hackathon@gmail.com", b, message)
                             
 
 # print(getstrength("-MhgMi6vZn4-xfOcyyoC"))

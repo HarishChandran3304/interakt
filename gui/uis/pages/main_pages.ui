@@ -1215,7 +1215,7 @@ text-align: center;</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="l_name_layout">
+       <layout class="QVBoxLayout" name="s_name_layout">
         <property name="spacing">
          <number>0</number>
         </property>

@@ -120,6 +120,11 @@ class SetupMainWindow:
         
         # ADDING WIDGETS TO PAGES
         # 1) Signup Page
+        #name
+        self.s_name_line_edit = QLineEdit()
+        self.s_name_line_edit.setMinimumHeight(50)
+        self.s_name_line_edit.setStyleSheet("border-radius: 12px; font-size: 35px; color:black;")
+        self.ui.load_pages.s_name_layout.addWidget(self.s_name_line_edit)
         #email
         self.s_email_line_edit = QLineEdit()
         self.s_email_line_edit.setMinimumHeight(50)
@@ -142,13 +147,16 @@ class SetupMainWindow:
                 with open(r'UserPref/preferences.json', 'w') as f:
                     f.write(p)
                 if self.pref["usertype"] == "Teacher":
+                    db.add_teacher(self.pref["localId"],  self.s_email_line_edit.text(), self.s_name_line_edit.text())
                     self.classes = db.tc_get_classes(self.pref["localId"])
                     setup_teacher_pages()
                     MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
                 else:
-                    self.classes = db.tc_get_classes(self.pref["localId"])
+                    db.add_student(self.pref["localId"],  self.s_email_line_edit.text(), self.s_name_line_edit.text())
+                    self.classes = db.st_get_classes(self.pref["localId"])
                     setup_student_pages()
                     MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
+            
         self.s_submit_btn = PyPushButton(
             text="Submit",
             radius=12,
@@ -180,12 +188,7 @@ class SetupMainWindow:
         
         
         # 2) Login Page
-        #name
-        self.l_name_line_edit = QLineEdit()
-        self.l_name_line_edit.setMinimumHeight(50)
-        self.l_name_line_edit.setStyleSheet("border-radius: 12px; font-size: 35px; color:black;")
-        self.ui.load_pages.l_name_layout.addWidget(self.l_name_line_edit)
-        #email
+        # #email
         self.l_email_line_edit = QLineEdit()
         self.l_email_line_edit.setMinimumHeight(50)
         self.l_email_line_edit.setStyleSheet("border-radius: 12px; font-size: 35px; color:black;")
@@ -201,7 +204,7 @@ class SetupMainWindow:
             creds = auth.log_in(self.l_email_line_edit.text(), self.l_pwd_line_edit.text())
             if creds:
                 self.pref["localId"] = creds["localId"]
-                self.pref["usertype"] = self.ui.load_pages.s_user_type.currentText()
+                self.pref["usertype"] = self.ui.load_pages.l_user_type.currentText()
                 p = json.dumps(self.pref)
                 with open(r'UserPref/preferences.json', 'w') as f:
                     f.write(p)
@@ -519,7 +522,7 @@ class SetupMainWindow:
                 db.join_class(self.pref["localId"], code)
                 self.classes = db.st_get_classes(self.pref["localId"])
                 populate_table(self.classes[code]["ClassName"], db.getteachername(code), self.classes[code]["Score"], self.classes[code]["Streak"])
-                self.new_class.setText("")
+                self.class_code.setText("")
             self.join_class_btn = PyPushButton(
                 text="Join Class",
                 radius=12,
@@ -541,8 +544,13 @@ class SetupMainWindow:
 
             # Redeem reward btn
             def redeem():
-                rew = self.ui.load_pages.pick_reward.itemText()
-                pass
+                rew = self.ui.load_pages.pick_reward.currentText()
+                print(self.classes)
+                for key, value in self.classes.items():
+                    if value["ClassName"] == rew.split(": ")[0]:
+                        self.email_classcode = key
+                        break
+                db.send_email(self.pref["localId"], self.email_classcode, rew.replace(":", ""))
             self.redeem_btn = PyPushButton(
                 text="Redeem",
                 radius=12,

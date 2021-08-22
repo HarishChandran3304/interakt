@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main_pagesnqPVEz.ui'
+## Form generated from reading UI file 'main_pagespKlPcP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.14.1
 ##
@@ -9,6 +9,7 @@
 ################################################################################
 
 from qt_core import *
+
 
 class Ui_MainPages(object):
     def setupUi(self, MainPages):
@@ -355,10 +356,10 @@ class Ui_MainPages(object):
         self.s_name_frame.setStyleSheet(u"border-radius: 15")
         self.s_name_frame.setFrameShape(QFrame.NoFrame)
         self.s_name_frame.setFrameShadow(QFrame.Raised)
-        self.l_name_layout = QVBoxLayout(self.s_name_frame)
-        self.l_name_layout.setSpacing(0)
-        self.l_name_layout.setObjectName(u"l_name_layout")
-        self.l_name_layout.setContentsMargins(0, 0, 0, 0)
+        self.s_name_layout = QVBoxLayout(self.s_name_frame)
+        self.s_name_layout.setSpacing(0)
+        self.s_name_layout.setObjectName(u"s_name_layout")
+        self.s_name_layout.setContentsMargins(0, 0, 0, 0)
         self.pages.addWidget(self.signup_page)
         self.signup_label.raise_()
         self.already_have_frame.raise_()

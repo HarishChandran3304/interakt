@@ -50,7 +50,13 @@ class MainWindow(QMainWindow): # Main window
             self.ui.left_menu.select_only_one(btn.objectName())
             
             # Load page
-            MainFunctions.set_page(self, self.ui.load_pages.home_page)
+            if self.pref["localId"] == None:
+                MainFunctions.set_page(self, self.ui.load_pages.login_page)
+            else:
+                if self.pref["usertype"] == "Teacher":
+                    MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
+                elif self.pref["usertype"] == "Student":
+                    MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
         
         # Open profile page
         if btn.objectName() == "btn_profile":

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main_pagesearqgH.ui'
+## Form generated from reading UI file 'main_pagesnqPVEz.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.14.1
 ##
@@ -9,7 +9,6 @@
 ################################################################################
 
 from qt_core import *
-
 
 class Ui_MainPages(object):
     def setupUi(self, MainPages):
@@ -265,7 +264,7 @@ class Ui_MainPages(object):
         self.signup_page.setObjectName(u"signup_page")
         self.s_email_frame = QFrame(self.signup_page)
         self.s_email_frame.setObjectName(u"s_email_frame")
-        self.s_email_frame.setGeometry(QRect(640, 270, 450, 80))
+        self.s_email_frame.setGeometry(QRect(640, 340, 450, 80))
         self.s_email_frame.setMinimumSize(QSize(450, 80))
         self.s_email_frame.setMaximumSize(QSize(450, 80))
         self.s_email_frame.setStyleSheet(u"border-radius: 15")
@@ -277,7 +276,7 @@ class Ui_MainPages(object):
         self.s_email_layout.setContentsMargins(0, 0, 0, 0)
         self.s_pwd_frame = QFrame(self.signup_page)
         self.s_pwd_frame.setObjectName(u"s_pwd_frame")
-        self.s_pwd_frame.setGeometry(QRect(640, 390, 450, 80))
+        self.s_pwd_frame.setGeometry(QRect(640, 420, 450, 80))
         self.s_pwd_frame.setMinimumSize(QSize(450, 80))
         self.s_pwd_frame.setMaximumSize(QSize(450, 80))
         self.s_pwd_frame.setFrameShape(QFrame.NoFrame)
@@ -288,13 +287,13 @@ class Ui_MainPages(object):
         self.s_pwd_layout.setContentsMargins(0, 0, 0, 0)
         self.s_email_label = QLabel(self.signup_page)
         self.s_email_label.setObjectName(u"s_email_label")
-        self.s_email_label.setGeometry(QRect(0, 270, 641, 81))
+        self.s_email_label.setGeometry(QRect(0, 340, 641, 81))
         self.s_email_label.setFont(font)
         self.s_email_label.setStyleSheet(u"font-size: 50px;")
         self.s_email_label.setAlignment(Qt.AlignCenter)
         self.s_pwd_label = QLabel(self.signup_page)
         self.s_pwd_label.setObjectName(u"s_pwd_label")
-        self.s_pwd_label.setGeometry(QRect(0, 390, 641, 81))
+        self.s_pwd_label.setGeometry(QRect(0, 420, 641, 81))
         self.s_pwd_label.setFont(font)
         self.s_pwd_label.setStyleSheet(u"font-size: 50px;\n"
 "")
@@ -307,7 +306,7 @@ class Ui_MainPages(object):
         self.signup_label.setAlignment(Qt.AlignCenter)
         self.s_submit_frame = QFrame(self.signup_page)
         self.s_submit_frame.setObjectName(u"s_submit_frame")
-        self.s_submit_frame.setGeometry(QRect(440, 490, 280, 80))
+        self.s_submit_frame.setGeometry(QRect(440, 520, 280, 80))
         self.s_submit_frame.setMinimumSize(QSize(280, 80))
         self.s_submit_frame.setMaximumSize(QSize(280, 80))
         self.s_submit_frame.setFrameShape(QFrame.StyledPanel)
@@ -318,7 +317,7 @@ class Ui_MainPages(object):
         self.s_submit_layout.setContentsMargins(0, 0, 0, 0)
         self.s_user_type_label = QLabel(self.signup_page)
         self.s_user_type_label.setObjectName(u"s_user_type_label")
-        self.s_user_type_label.setGeometry(QRect(0, 160, 641, 81))
+        self.s_user_type_label.setGeometry(QRect(0, 180, 641, 81))
         self.s_user_type_label.setFont(font)
         self.s_user_type_label.setStyleSheet(u"font-size: 50px;")
         self.s_user_type_label.setAlignment(Qt.AlignCenter)
@@ -326,7 +325,7 @@ class Ui_MainPages(object):
         self.s_user_type.addItem("")
         self.s_user_type.addItem("")
         self.s_user_type.setObjectName(u"s_user_type")
-        self.s_user_type.setGeometry(QRect(710, 180, 311, 41))
+        self.s_user_type.setGeometry(QRect(710, 200, 311, 41))
         self.s_user_type.setStyleSheet(u"font-size: 35px;\n"
 "background-color: rgb(27, 30, 35);\n"
 "color: rgb(138, 149, 170);\n"
@@ -342,6 +341,24 @@ class Ui_MainPages(object):
         self.already_have_layout.setSpacing(0)
         self.already_have_layout.setObjectName(u"already_have_layout")
         self.already_have_layout.setContentsMargins(0, 0, 0, 0)
+        self.s_name_label = QLabel(self.signup_page)
+        self.s_name_label.setObjectName(u"s_name_label")
+        self.s_name_label.setGeometry(QRect(0, 260, 641, 81))
+        self.s_name_label.setFont(font)
+        self.s_name_label.setStyleSheet(u"font-size: 50px;")
+        self.s_name_label.setAlignment(Qt.AlignCenter)
+        self.s_name_frame = QFrame(self.signup_page)
+        self.s_name_frame.setObjectName(u"s_name_frame")
+        self.s_name_frame.setGeometry(QRect(640, 260, 450, 80))
+        self.s_name_frame.setMinimumSize(QSize(450, 80))
+        self.s_name_frame.setMaximumSize(QSize(450, 80))
+        self.s_name_frame.setStyleSheet(u"border-radius: 15")
+        self.s_name_frame.setFrameShape(QFrame.NoFrame)
+        self.s_name_frame.setFrameShadow(QFrame.Raised)
+        self.l_name_layout = QVBoxLayout(self.s_name_frame)
+        self.l_name_layout.setSpacing(0)
+        self.l_name_layout.setObjectName(u"l_name_layout")
+        self.l_name_layout.setContentsMargins(0, 0, 0, 0)
         self.pages.addWidget(self.signup_page)
         self.signup_label.raise_()
         self.already_have_frame.raise_()
@@ -352,6 +369,8 @@ class Ui_MainPages(object):
         self.s_submit_frame.raise_()
         self.s_user_type_label.raise_()
         self.s_user_type.raise_()
+        self.s_name_label.raise_()
+        self.s_name_frame.raise_()
         self.login_page = QWidget()
         self.login_page.setObjectName(u"login_page")
         self.login_label = QLabel(self.login_page)
@@ -440,7 +459,7 @@ class Ui_MainPages(object):
 
         self.retranslateUi(MainPages)
 
-        self.pages.setCurrentIndex(2)
+        self.pages.setCurrentIndex(4)
 
 
         QMetaObject.connectSlotsByName(MainPages)
@@ -469,6 +488,7 @@ class Ui_MainPages(object):
         self.s_user_type.setItemText(0, QCoreApplication.translate("MainPages", u"Teacher", None))
         self.s_user_type.setItemText(1, QCoreApplication.translate("MainPages", u"Student", None))
 
+        self.s_name_label.setText(QCoreApplication.translate("MainPages", u"Name", None))
         self.login_label.setText(QCoreApplication.translate("MainPages", u"Login", None))
         self.l_user_type.setItemText(0, QCoreApplication.translate("MainPages", u"Teacher", None))
         self.l_user_type.setItemText(1, QCoreApplication.translate("MainPages", u"Student", None))

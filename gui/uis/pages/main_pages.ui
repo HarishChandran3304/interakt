@@ -35,7 +35,7 @@
       <string notr="true">text-align: center;</string>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tc_home_page">
       <property name="styleSheet">
@@ -859,7 +859,7 @@ text-align: center;</string>
        <property name="geometry">
         <rect>
          <x>640</x>
-         <y>270</y>
+         <y>340</y>
          <width>450</width>
          <height>80</height>
         </rect>
@@ -907,7 +907,7 @@ text-align: center;</string>
        <property name="geometry">
         <rect>
          <x>640</x>
-         <y>390</y>
+         <y>420</y>
          <width>450</width>
          <height>80</height>
         </rect>
@@ -952,7 +952,7 @@ text-align: center;</string>
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>270</y>
+         <y>340</y>
          <width>641</width>
          <height>81</height>
         </rect>
@@ -976,7 +976,7 @@ text-align: center;</string>
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>390</y>
+         <y>420</y>
          <width>641</width>
          <height>81</height>
         </rect>
@@ -1025,7 +1025,7 @@ text-align: center;</string>
        <property name="geometry">
         <rect>
          <x>440</x>
-         <y>490</y>
+         <y>520</y>
          <width>280</width>
          <height>80</height>
         </rect>
@@ -1070,7 +1070,7 @@ text-align: center;</string>
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>160</y>
+         <y>180</y>
          <width>641</width>
          <height>81</height>
         </rect>
@@ -1094,7 +1094,7 @@ text-align: center;</string>
        <property name="geometry">
         <rect>
          <x>710</x>
-         <y>180</y>
+         <y>200</y>
          <width>311</width>
          <height>41</height>
         </rect>
@@ -1161,6 +1161,78 @@ text-align: center;</string>
         </property>
        </layout>
       </widget>
+      <widget class="QLabel" name="s_name_label">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>260</y>
+         <width>641</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-size: 50px;</string>
+       </property>
+       <property name="text">
+        <string>Name</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QFrame" name="s_name_frame">
+       <property name="geometry">
+        <rect>
+         <x>640</x>
+         <y>260</y>
+         <width>450</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>450</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>450</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-radius: 15</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="l_name_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
       <zorder>signup_label</zorder>
       <zorder>already_have_frame</zorder>
       <zorder>s_email_frame</zorder>
@@ -1170,6 +1242,8 @@ text-align: center;</string>
       <zorder>s_submit_frame</zorder>
       <zorder>s_user_type_label</zorder>
       <zorder>s_user_type</zorder>
+      <zorder>s_name_label</zorder>
+      <zorder>s_name_frame</zorder>
      </widget>
      <widget class="QWidget" name="login_page">
       <widget class="QLabel" name="login_label">

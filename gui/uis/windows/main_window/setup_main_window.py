@@ -9,7 +9,7 @@ from gui.core.json_themes import Themes
 from gui.widgets import *
 from . ui_main import *
 from . functions_main_window import *
-import auth
+import backend.auth as auth
 import json
 
 
@@ -26,7 +26,7 @@ class SetupMainWindow:
             "btn_icon" : "icon_home.svg",
             "btn_id" : "btn_home",
             "btn_text" : "Home",
-            "btn_tooltip" : "Home page",
+            "btn_tooltip" : "Home",
             "show_top" : True,
             "is_active" : True
         },
@@ -145,6 +145,7 @@ class SetupMainWindow:
             creds = auth.sign_up(self.s_email_line_edit.text(), self.s_pwd_line_edit.text())
             if creds:
                 self.pref["localId"] = creds["localId"]
+                self.pref["name"] = self.s_name_line_edit.text()
                 self.pref["usertype"] = self.ui.load_pages.s_user_type.currentText()
                 p = json.dumps(self.pref)
                 with open(r'UserPref/preferences.json', 'w') as f:
@@ -166,7 +167,6 @@ class SetupMainWindow:
         def redirect_to_login_page():
             print("Redirecting to login")
             MainFunctions.set_page(self, self.ui.load_pages.login_page)
-            print("Done")
         self.already_have_btn = PyPushButton(
             text="Already have an account?\nLogin here",
             radius=12,
@@ -182,6 +182,11 @@ class SetupMainWindow:
         
         
         # 2) Login Page
+        #name
+        self.l_name_line_edit = QLineEdit()
+        self.l_name_line_edit.setMinimumHeight(50)
+        self.l_name_line_edit.setStyleSheet("border-radius: 12px; font-size: 35px; color:black;")
+        self.ui.load_pages.l_name_layout.addWidget(self.l_name_line_edit)
         #email
         self.l_email_line_edit = QLineEdit()
         self.l_email_line_edit.setMinimumHeight(50)
@@ -220,7 +225,6 @@ class SetupMainWindow:
         def redirect_to_signup_page():
             print("Redirecting to signup")
             MainFunctions.set_page(self, self.ui.load_pages.signup_page)
-            print("Done")
         self.dont_have_btn = PyPushButton(
             text="Don't have an account?\nSignup here",
             radius=12,
@@ -407,10 +411,10 @@ class SetupMainWindow:
         self.st_column_1.setText("Your Classes")
         self.st_column_2 = QTableWidgetItem()
         self.st_column_2.setTextAlignment(Qt.AlignCenter)
-        self.st_column_2.setText("Score")
+        self.st_column_2.setText("Teacher")
         self.st_column_3 = QTableWidgetItem()
         self.st_column_3.setTextAlignment(Qt.AlignCenter)
-        self.st_column_3.setText("Streak")
+        self.st_column_3.setText("Score")
         # Set column
         self.st_table.setHorizontalHeaderItem(0, self.st_column_1)
         self.st_table.setHorizontalHeaderItem(1, self.st_column_2)

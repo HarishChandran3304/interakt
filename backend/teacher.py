@@ -1,6 +1,6 @@
 import csv
 import pyrebase
-import db
+# import db
 import os
 firebaseConfig={'apiKey': "AIzaSyA-s0Bjin-4gmuOUc_PVXRmY0dMHFMk_BE",
     'authDomain': "hackathon-9bd4b.firebaseapp.com",
@@ -49,40 +49,36 @@ def reading(classcode): #collecting data from firebase in a sorted manner
         userid+=[i[3]]
 
     score,name,streakcalc,userid=bubbleSort(score,name,streakcalc,userid)
-    return score,name,streakcalc,userid
+    # return score,name,streakcalc,userid
+    return name, userid, score, streakcalc
         
     
   
-def startclass(classcode):
-    i=0
-    score,name,streakcalc,userid=reading(classcode)
+def startclass(classcode, i):
+    name, userid, score, streakcalc=reading(classcode)
     
-    while True:
-        if i<len(score):
+    if i<len(score):
 
-            print(f"{name[i]} has a score of {score[i]}")
-            
-            s=int(input("Enter interaction score:"))
-            bonus=int(input("Enter bonus points:"))
-            if s+bonus>=4:
-                streakcalc[i]+=1
-                
-            else:
-                streakcalc[i]=0
-            if streakcalc[i]!=0 and streakcalc[i]%3==0:
-                score[i]+=5 #the points added due to streak of 3 interactions rated above 4
-            score[i]+=s+bonus
-        else:
-            i=0
-            score,name,streakcalc,userid=bubbleSort(score,name,streakcalc,userid)
-            continue
-            
-        print("Do u wanna end the class:")
+        # print(f"{name[i]} has a score of {score[i]}")
         
-        i+=1
-        if input()=="yes":
-            endclass(score,name,streakcalc,userid,"teacher.csv",classcode)
-            break
+        s=int(input("Enter interaction score:"))
+        bonus=int(input("Enter bonus points:"))
+        if s+bonus>=4:
+            streakcalc[i]+=1
+            
+        else:
+            streakcalc[i]=0
+        if streakcalc[i]!=0 and streakcalc[i]%3==0:
+            score[i]+=5 #the points added due to streak of 3 interactions rated above 4
+        score[i]+=s+bonus
+    else:
+        i=0
+        score,name,streakcalc,userid=bubbleSort(score,name,streakcalc,userid)
+        
+    # print("Do u wanna end the class:")
+    
+    # if input()=="yes":
+        endclass(score,name,streakcalc,userid,"teacher.csv",classcode)
         
 def endclass(score,name,streakcalc,userid,filename,classcode):
     with open(filename,"w",newline="") as fh:
@@ -94,13 +90,16 @@ def endclass(score,name,streakcalc,userid,filename,classcode):
         db.rewards(classcode)
 def openfile(file):
     os.startfile(file)
-email=input("Enter email:")
-password = input(" Enter Your Password : ")
-login= auth.sign_in_with_email_and_password(email,password)
-teacherid=login['localId']
-classcodes=db.get_classcode(teacherid)
-classname=input("Enter classname:")
-classcode=classcodes[classname]
-startclass(classcode)
+# email=input("Enter email:")
+# password = input(" Enter Your Password : ")
+# login= auth.sign_in_with_email_and_password(email,password)
+# teacherid=login['localId']
+# classcodes=db.get_classcode(teacherid)
+# classname=input("Enter classname:")
+# classcode=classcodes[classname]
+# openfile("teacher.csv")
 
-openfile("teacher.csv")
+
+
+
+print(reading("-MhgMi6vZn4-xfOcyyoC"))

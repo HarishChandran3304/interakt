@@ -1,3 +1,4 @@
+from urllib.parse import non_hierarchical
 import pyrebase
 firebaseConfig={'apiKey': "AIzaSyA-s0Bjin-4gmuOUc_PVXRmY0dMHFMk_BE",
     'authDomain': "hackathon-9bd4b.firebaseapp.com",
@@ -11,9 +12,10 @@ firebaseConfig={'apiKey': "AIzaSyA-s0Bjin-4gmuOUc_PVXRmY0dMHFMk_BE",
 firebase=pyrebase.initialize_app(firebaseConfig)
 auth=firebase.auth()
 database=firebase.database()
-def update_student_score(score,streak,classcode,student_id): #to update student scores
-    database.child("Classes").child(classcode).child(student_id).update({"Score":score,"Streak":streak})
-    database.child("Students").child(student_id).child(classcode).update({"Score":score,"Streak":streak})
+def update_student_scores(score,streak,classcode,student_id): #to update student scores
+    for i in range(len(score)):
+        database.child("Classes").child(classcode).child(student_id[i]).update({"Score":score[i],"Streak":streak[i]})
+        database.child("Students").child(student_id[i]).child(classcode).update({"Score":score[i],"Streak":streak[i]})
         
 
 def add_teacher(teacherid,teacheremail,teachername):#to add teachers to database
@@ -22,6 +24,8 @@ def add_teacher(teacherid,teacheremail,teachername):#to add teachers to database
 def create_class(classname,teacherid):
     a=database.child("Classes").get().val()
     b=database.child("Teachers").child(teacherid).child("Classes").get().val()
+    if b == None:
+        b=[]
     b.append(classname)
     database.child("Teachers").child(teacherid).child("Classes").set(b)
     teachername=database.child("Teachers").child(teacherid).get().val()["Name"]
@@ -90,6 +94,7 @@ def student_scores(studentid):
             scores=a[i]["Score"]
             Streak=a[i]["Streak"]
             print(f"{name}|{classname}|{scores}|{Streak}")
+
         
 def displayrewardstatus(studentid,classname):# get studentid from login['localId']
     a=database.child("Classes").get().val()

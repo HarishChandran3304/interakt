@@ -10,7 +10,7 @@ from gui.widgets import *
 from . ui_main import *
 from . functions_main_window import *
 import json
-from backend import auth, db
+from backend import auth, db, teacher
 
 
 # CLASSES
@@ -244,30 +244,20 @@ class SetupMainWindow:
         self.dont_have_btn.clicked.connect(redirect_to_signup_page)
         self.ui.load_pages.dont_have_layout.addWidget(self.dont_have_btn)
         
+        
         def setup_teacher_pages():
             # 3) Teacher Home Page
             #Classes combo box
             for cl in self.classes.keys():
                 self.ui.load_pages.tc_select_cl.addItem(cl)
-            #Next button
-            def next_student():
-                pass
-            self.next_st_btn = PyPushButton(
-                text="Next",
-                radius=12,
-                color=self.themes["app_color"]["text_foreground"],
-                bg_color=self.themes["app_color"]["dark_one"],
-                bg_color_hover=self.themes["app_color"]["context_hover"],
-                bg_color_pressed=self.themes["app_color"]["context_hover"],
-                font_size=35
-                )
-            self.next_st_btn.setMinimumHeight(50)
-            self.next_st_btn.clicked.connect(next_student)
-            self.ui.load_pages.next_st_layout.addWidget(self.next_st_btn)
             
             #Start Class button
             def start_class(clcode):
-                pass
+                self.i = 0
+                self.name, self.localid, self.score, self.streak = teacher.reading(self.classes[self.ui.load_pages.tc_class_select.currentText()])
+                self.ui.load_pages.st_name_label.setText(self.name[self.i])
+                
+                
             self.start_cl_btn = PyPushButton(
                 text="Start Class",
                 radius=12,
@@ -284,7 +274,7 @@ class SetupMainWindow:
             #End Class button
             def end_class():
                 self.ui.load_pages.st_name_label.setText("[Start a class first]")
-                pass
+                db.update_student_scores(self.score, self.streak, self.classes[self.ui.load_pages.tc_class_select.currentText()], self.localid)
             self.end_cl_btn = PyPushButton(
                 text="End Class",
                 radius=12,
@@ -297,6 +287,52 @@ class SetupMainWindow:
             self.end_cl_btn.setMinimumHeight(50)
             self.end_cl_btn.clicked.connect(end_class)
             self.ui.load_pages.end_cl_layout.addWidget(self.end_cl_btn)
+            
+            def sc_select():
+                self.sc = 0
+                if self.ui.load_pages.sc_1.isChecked():
+                    self.sc = 1
+                if self.ui.load_pages.sc_2.isChecked():
+                    self.sc = 2
+                if self.ui.load_pages.sc_3.isChecked():
+                    self.sc = 3
+                if self.ui.load_pages.sc_4.isChecked():
+                    self.sc = 4
+                if self.ui.load_pages.sc_5.isChecked():
+                    self.sc = 5
+            self.ui.load_pages.sc_1.clicked.connect(sc_select)
+            self.ui.load_pages.sc_2.clicked.connect(sc_select)
+            self.ui.load_pages.sc_3.clicked.connect(sc_select)
+            self.ui.load_pages.sc_4.clicked.connect(sc_select)
+            self.ui.load_pages.sc_5.clicked.connect(sc_select)
+                
+            #Next button
+            def next_student():
+                if self.sc > 3:
+                    self.streak[self.i] += 1
+                    if self.streak[self.i] % 5 == 0 and self.streak[self.i] != 0:
+                        self.score[self.i] += 5
+                else:
+                    self.streak[self.i] = 0
+                self.score[self.i] += self.sc
+                self.i += 1
+                if len(self.score) == self.i:
+                    self.i = 0
+                    self.score, self.name, self.localid, self.streak = teacher.bubbleSort(self.score, self.name, self.localid, self.streak)
+                self.ui.load_pages.st_name_label.setText(self.name[self.i])
+                
+            self.next_st_btn = PyPushButton(
+                text="Next",
+                radius=12,
+                color=self.themes["app_color"]["text_foreground"],
+                bg_color=self.themes["app_color"]["dark_one"],
+                bg_color_hover=self.themes["app_color"]["context_hover"],
+                bg_color_pressed=self.themes["app_color"]["context_hover"],
+                font_size=35
+                )
+            self.next_st_btn.setMinimumHeight(50)
+            self.next_st_btn.clicked.connect(next_student)
+            self.ui.load_pages.next_st_layout.addWidget(self.next_st_btn)
             
             
             
@@ -348,7 +384,7 @@ class SetupMainWindow:
                 self.tc_table.setItem(row_number, 0, self.class_text)
                 self.code_text = QTableWidgetItem()
                 self.code_text.setTextAlignment(Qt.AlignCenter)
-                self.code_text.setText(classcode)
+                self.code_text.setText(str(classcode))
                 self.tc_table.setItem(row_number, 1, self.code_text)
                 self.strength_text = QTableWidgetItem()
                 self.strength_text.setTextAlignment(Qt.AlignCenter)
@@ -356,7 +392,7 @@ class SetupMainWindow:
                 self.tc_table.setItem(row_number, 2, self.strength_text)
                 self.tc_table.setRowHeight(row_number, 40)
             for cl in self.classes.keys():
-                populate_table(cl, self.classes[cl], 40)
+                populate_table(cl, self.classes[cl])
             
             # Class name input
             self.new_class = QLineEdit()
@@ -370,7 +406,7 @@ class SetupMainWindow:
                 classname = self.new_class.text()
                 classcode = db.create_class(classname, self.pref["localId"])
                 self.classes[classname] = classcode
-                populate_table(classname, classcode, 40)
+                populate_table(classname, classcode)
                 self.ui.load_pages.tc_select_cl.addItem(classname)
                 self.ui.load_pages.tc_class_select.addItem(classname)
                 self.new_class.setText("")
@@ -532,7 +568,7 @@ class SetupMainWindow:
                 MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
             elif self.pref["usertype"] == "Student":
                 self.classes = db.st_get_classes(self.pref["localId"])
-                setup_teacher_pages()
+                setup_student_pages()
                 MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
                 
     def resize_grips(self): # Handle window resize

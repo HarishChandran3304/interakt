@@ -188,7 +188,7 @@ class SetupMainWindow:
         
         
         # 2) Login Page
-        # #email
+        # email
         self.l_email_line_edit = QLineEdit()
         self.l_email_line_edit.setMinimumHeight(50)
         self.l_email_line_edit.setStyleSheet("border-radius: 12px; font-size: 35px; color:black;")
@@ -213,7 +213,7 @@ class SetupMainWindow:
                     setup_teacher_pages()
                     MainFunctions.set_page(self, self.ui.load_pages.tc_home_page)
                 else:
-                    self.classes = db.tc_get_classes(self.pref["localId"])
+                    self.classes = db.st_get_classes(self.pref["localId"])
                     setup_student_pages()
                     MainFunctions.set_page(self, self.ui.load_pages.st_home_page)
                     
@@ -504,6 +504,7 @@ class SetupMainWindow:
             self.st_table.setHorizontalHeaderItem(2, self.st_column_3)
             self.st_table.setHorizontalHeaderItem(3, self.st_column_4)
             # Populating table
+            print(self.classes)
             for key, value in self.classes.items():
                 populate_table(value["ClassName"], db.getteachername(key), value["Score"], value["Streak"])
             # Add to layout

@@ -45,14 +45,19 @@ def join_class(studentid,classcode): # to join a class with classcode
     
 def tc_get_classes(teacherid): # gets classcode for corresponding classnames
     a=database.child("Classes").get().val()
-    code={}
+    classes ={ }
     for i in a:
         if a[i]["Teacherid"]==teacherid:
-            code.update({a[i]["ClassName"]:i})
-    return code
+            classes.update({a[i]["ClassName"]:i})
+    return classes
 
-def st_getclass(studentid):
-    pass
+def st_get_classes(studentid):
+    a=database.child("Students").get().val()
+    classes = {}
+    for key in a[studentid].keys():
+        if key!="Email" and key!="Name":
+            classes[key] = a[studentid][key]
+    return classes
 
 def rewards(classcode):
     #calling this function after every class ends
@@ -107,13 +112,19 @@ def getstrength(classcode):
     for j in a:
         if j == classcode:
             return len(a[j].keys())-4
+
+def getteachername(classcode):
+    a=database.child("Classes").get().val()
+    return a[classcode]["Teacher"]
+    
                             
 
-print(getstrength("-MhgMi6vZn4-xfOcyyoC"))
+# print(getstrength("-MhgMi6vZn4-xfOcyyoC"))
 # join_class("LuuI5235FPO8fjiPbuk99OCplLf1", "-MhgMi6vZn4-xfOcyyoC")
 # print(create_class("plswork","0vMtR9S3Medc4lYhpfPYz9L7sv03"))
 # print(tc_get_classes("0vMtR9S3Medc4lYhpfPYz9L7sv03"))
-                        
+# print(getclassdetails("-MhgMi6vZn4-xfOcyyoC"))
+# print(st_get_classes("-MhgMi6vZn4-xfOcyyoC"))
                         
     
                     

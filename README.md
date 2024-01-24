@@ -1,4 +1,4 @@
-# Interakt
+# Interakt 🙋
 
 Interakt is an app developed to further bridge the gap between students and teachers during these unprecedented times by making live online classroom interaction more rewarding for students.
 
